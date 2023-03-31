@@ -9,6 +9,7 @@ from django.db import models
 from django.conf import settings
 
 from core.user_manager import CustomUserManager
+from user.models import Address
 
 CHOICES_ACCOUNT_TYPE = (
     ("p", "Personal"),
@@ -44,3 +45,16 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
+
+
+class BusinessInfo(models.Model):
+    name = models.CharField(max_length=255)
+    owner = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    about = models.TextField(verbose_name="About Business", max_length=250, null=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20)
+    email = models.EmailField()
+    website = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+    def __str__(self):
+        return "Business {}".format(self.name)
