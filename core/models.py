@@ -45,6 +45,9 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(default="default.jpg", upload_to=f"profiles/{user.name}")
 
 
 class BusinessInfo(models.Model):
