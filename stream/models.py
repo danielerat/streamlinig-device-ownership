@@ -47,3 +47,9 @@ class Device(models.Model):
     def __str__(self):
         return "Device "+ self.model
 
+
+class DeviceFirstAssignment(models.Model):
+    device=models.OneToOneField(Device,on_delete=models.CASCADE)
+    holder = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    first_owner=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
