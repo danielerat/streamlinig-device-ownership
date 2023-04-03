@@ -3,16 +3,20 @@ from rest_framework.serializers import ModelSerializer
 
 from stream.models import Device, DeviceImage
 
-#Device Image Serializer
+# Device Image Serializer
+
+
 class DeviceImageSerializer(ModelSerializer):
     class Meta:
         model = DeviceImage
-        fields = ['id','image']
+        fields = ['id', 'image']
 
-# Device serializer
+# Device Serializer
+
+
 class DeviceSerializer(ModelSerializer):
-    images=DeviceImageSerializer()
+    # images=DeviceImageSerializer()
     class Meta:
         model = Device
-        fields = ["id","name","model","serial_number","mac_address","imei","price","category","desc","quality","status","owner","images"]
-
+        fields = ["id", "name", "model", "serial_number", "mac_address", "imei",
+                  "price", "category", "desc", "quality", "status", "owner", "images"]
