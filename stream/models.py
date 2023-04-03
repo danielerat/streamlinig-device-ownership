@@ -75,3 +75,17 @@ class Warranty(models.Model):
 
     def __str__(self):
         return "Warranty {}".format(self.device)
+
+
+# Device Transfer between Users
+class Transfer(models.Model):
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid4)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE,null=False, blank=False)
+    transferor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,related_name="transferors")
+    transferee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,related_name="transferees")
+    transfer_status = models.CharField(choices=TRANSFER_STATUS,max_length=1, default="P", null=False,blank=False)
+    last_confirm = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Transfer #%s" % self.id
+
