@@ -60,3 +60,18 @@ class DeviceImage(models.Model):
     image=models.ImageField(upload_to='device/images/',validators=[validate_file_size])
     def __str__(self):
         return "Image " + self.id
+
+
+# Warranty of every single device
+class Warranty(models.Model):
+    device = models.OneToOneField(Device, on_delete=models.CASCADE, null=True)
+    days = models.PositiveSmallIntegerField(
+        verbose_name="Warranty Life",
+        default=1,
+        validators=[MinValueValidator(0), MaxValueValidator(1100)],
+        help_text="Warranty in days",
+    )
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Warranty {}".format(self.device)
