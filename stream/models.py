@@ -89,3 +89,14 @@ class Transfer(models.Model):
     def __str__(self):
         return f"Transfer #%s" % self.id
 
+
+
+# Devices that are published and can be seen by the public for purchase
+class Publish(models.Model):
+    id = models.UUIDField(primary_key=True, unique=True, default=uuid4)
+    publisher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE, null=True)
+    isPublished = models.BooleanField(default=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Published %s" % self.device.name
