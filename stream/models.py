@@ -31,7 +31,7 @@ TRANSFER_STATUS = (
     ("D", "Denied"),
 )
 class Device(models.Model):
-    id = models.UUIDField(primary_key=False, editable=False, unique=True, default=uuid4)
+    id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid4)
     name = models.CharField(verbose_name="Device Name", max_length=255)
     model = models.CharField(verbose_name="Model", max_length=255)
     serial_number = models.CharField(verbose_name="Serial Number", max_length=255, unique=True)
@@ -40,7 +40,7 @@ class Device(models.Model):
     price = models.DecimalField(max_digits=9,decimal_places=2,validators=[MinValueValidator(1)])
     category = models.CharField(choices=DEVICE_CATEGORY_CHOICES,blank=False, default="phone", max_length=50)
     desc = models.TextField(verbose_name="Device Description")
-    quality = models.PositiveIntegerField(choices=DEVICE_QUALITY_CHOICES,blank=False,null=False, default=2, max_length=1,validators=[MaxValueValidator(5),MinValueValidator(1)])
+    quality = models.PositiveIntegerField(choices=DEVICE_QUALITY_CHOICES,blank=False,null=False, default=2, validators=[MaxValueValidator(5),MinValueValidator(1)])
     status = models.CharField(choices=DEVICE_AVAILABILITY_CHOICES, null=False,blank=False, default="active", max_length=50)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,null=False,blank=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -50,6 +50,13 @@ class Device(models.Model):
 
 class DeviceFirstAssignment(models.Model):
     device=models.OneToOneField(Device,on_delete=models.CASCADE)
-    holder = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    holder = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name="+")
     first_owner=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+
+# Device images
+class DeviceImage(models.Model):
+    device=models.ForeignKey(Device, related_name="images",on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='device/images/',validators=[validate_file_size])
+    def __str__(self):
+        return "Image " + self.id
