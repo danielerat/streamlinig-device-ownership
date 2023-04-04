@@ -1,6 +1,27 @@
+
+from django.utils.html import format_html, urlencode
 from django.contrib import admin
-from stream.models import Device
+from stream.models import Device, DeviceImage, Warranty
 # Register your models here.
+
+
+class DeviceImageInline(admin.TabularInline):
+    model = DeviceImage
+    readonly_fields = ['thumbnail']
+    min_num = 2
+    max_num = 10
+    extra = 0
+
+    def thumbnail(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail"/>')
+
+    class Media:
+
+        css = {
+            'all': ['stream/styles.css']
+        }
+
 
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
@@ -28,3 +49,7 @@ class DeviceAdmin(admin.ModelAdmin):
         "owner__phone_number",
     ]
     list_filter = ["status", "quality", "created"]
+    inlines = [DeviceImageInline]
+
+
+admin.site.register(Warranty)

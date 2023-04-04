@@ -78,7 +78,7 @@ class DeviceImage(models.Model):
         upload_to='device/images/', validators=[validate_file_size])
 
     def __str__(self):
-        return "Image " + self.id
+        return "Image " + str(self.id)
 
 
 # Warranty of every single device
