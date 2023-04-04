@@ -31,6 +31,11 @@ class DeviceImageSerializer(ModelSerializer):
         model = DeviceImage
         fields = ['id', 'image']
 
+    def create(self, validated_data):
+        device_pk = self.context['device_pk']
+        return DeviceImage.objects.create(device_id=device_pk, **validated_data)
+
+
 # Device Serializer
 
 

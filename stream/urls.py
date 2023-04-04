@@ -3,8 +3,15 @@ from stream import views
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
-router.register('devices', views.DeviceViewset)
+router.register('devices', views.DeviceViewset, basename='devices')
+
+devices_router = routers.NestedSimpleRouter(
+    router, 'devices', lookup='device')
+
+devices_router.register(
+    'images', views.DeviceImageViewset, basename='device-images')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('', include(devices_router.urls)),
 ]
