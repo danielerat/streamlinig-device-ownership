@@ -1,16 +1,16 @@
 
 from django.utils.html import format_html, urlencode
 from django.contrib import admin
-from stream.models import Device, DeviceImage, Warranty
+from stream.models import Device, DeviceFirstAssignment, DeviceImage, Warranty
 # Register your models here.
 
 
 class DeviceImageInline(admin.TabularInline):
     model = DeviceImage
     readonly_fields = ['thumbnail']
-    min_num = 2
+    min_num = 0
     max_num = 10
-    extra = 0
+    extra = 2
 
     def thumbnail(self, instance):
         if instance.image.name != '':
@@ -53,3 +53,4 @@ class DeviceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Warranty)
+admin.site.register(DeviceFirstAssignment)

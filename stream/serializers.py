@@ -40,7 +40,7 @@ class DeviceImageSerializer(ModelSerializer):
 
 
 class DeviceSerializer(ModelSerializer):
-    images = DeviceImageSerializer(many=True)
+    images = DeviceImageSerializer(many=True, read_only=True)
     owner = SimpleUserSerializer(read_only=True)
     warranty = WarrantySerializer(read_only=True)
 
