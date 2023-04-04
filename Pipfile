@@ -8,6 +8,7 @@ django = "*"
 pillow = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
+djoser = "*"
 
 [dev-packages]
 autopep8 = "*"
