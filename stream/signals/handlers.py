@@ -1,25 +1,26 @@
-import threading
-from django.db.models.signals import post_save
-from stream.models import Device, DeviceFirstAssignment
+from django.db.models.signals import post_save, pre_save
+from stream.models import Device, DeviceFirstAssignment, PendingTransfer, Transfer
 from django.dispatch import receiver
 from django.utils import timezone
 
-# When A new Device is added in the system
-# -Record who added it (what business owner)
-# -To whom they assigned the device to
-# -When precisely it was achieved
 
-
-@receiver(post_save, sender=Device)
-def create_device_first_assignment(sender, instance, created, **kwargs):
-    if created:
-        request = getattr(threading.currentThread(), 'request', None)
-        if request and hasattr(request, 'user'):
-            holder = request.user
-        else:
-            holder = instance.owner
-        DeviceFirstAssignment.objects.create(
-            device=instance,
-            holder=holder,
-            first_owner=instance.owner
-        )
+@receiver(post_save, sender=PendingTransfer)
+def change_device_transfer_status(sender, instance, created, **kwargs):
+    if not created:
+        # User Accepts the device.
+        if instance.transfer_status == "A":
+            # Update New Device Owner
+            device = Device.objects.get(pk=instance.device.pk)
+            device.owner = instance.transferee
+            device.save()
+            # Save the Confirmed Transaction
+            Transfer.objects.create(
+                device=device,
+                transferor=instance.transferor,
+                transferee=instance.transferee,
+                transfer_status="A",
+            )
+            # Delete the pending device
+            instance.delete()
+        if instance.transfer_status == "D":
+            instance.delete()
