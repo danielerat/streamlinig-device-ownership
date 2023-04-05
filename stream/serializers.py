@@ -12,6 +12,12 @@ from core.models import User
 
 from rest_framework.exceptions import APIException
 
+
+class TransferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transfer
+        fields = ["id", "transferor", "transferee", "last_confirm", "created"]
+
 # warranty serializer
 
 
@@ -48,11 +54,12 @@ class DeviceImageSerializer(ModelSerializer):
 class DeviceSerializer(ModelSerializer):
     images = DeviceImageSerializer(many=True, read_only=True)
     warranty = WarrantySerializer(read_only=True)
+    transfers = TransferSerializer(many=True, read_only=True)
 
     class Meta:
         model = Device
         fields = ["id", "name", "model", "serial_number", "mac_address", "imei",
-                  "price", "category", "desc", "quality", "status", "owner", "images", "warranty"]
+                  "price", "category", "desc", "quality", "status", "owner", "images", "warranty", "transfers"]
 
     def create(self, validated_data):
         request = self.context.get('request')
