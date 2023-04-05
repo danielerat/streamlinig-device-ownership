@@ -1,7 +1,7 @@
 
 from django.utils.html import format_html, urlencode
 from django.contrib import admin
-from stream.models import Device, DeviceFirstAssignment, DeviceImage, Warranty
+from stream.models import Device, DeviceFirstAssignment, DeviceImage, PendingTransfer, Transfer, Warranty
 # Register your models here.
 
 
@@ -54,3 +54,5 @@ class DeviceAdmin(admin.ModelAdmin):
 
 admin.site.register(Warranty)
 admin.site.register(DeviceFirstAssignment)
+admin.site.register(Transfer)
+admin.site.register(PendingTransfer)
