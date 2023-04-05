@@ -22,10 +22,7 @@ class DeviceViewset(ModelViewSet):
             data=request.data, context={"device_pk": self.kwargs['pk'], "request": self.request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        # Add your custom logic here
-        # my_custom_data = serializer.validated_data['my_custom_field']
-
-        return Response("Ok Ok")
+        return Response({'message': 'Device Successfully Tranfered'})
 
 
 class DeviceImageViewset(ModelViewSet):
