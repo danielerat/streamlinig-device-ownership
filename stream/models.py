@@ -100,7 +100,7 @@ class Warranty(models.Model):
 class Transfer(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4)
     device = models.ForeignKey(
-        Device, on_delete=models.CASCADE, null=False, blank=False)
+        Device, on_delete=models.CASCADE, null=False, blank=False, related_name="transfers")
     transferor = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="transferors")
     transferee = models.ForeignKey(
