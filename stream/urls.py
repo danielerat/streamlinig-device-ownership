@@ -14,4 +14,6 @@ devices_router.register(
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(devices_router.urls)),
+    path('search/', views.DeviceSearchAPIView.as_view(), name='device-search'),
+
 ]
