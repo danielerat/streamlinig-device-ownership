@@ -93,3 +93,25 @@ class LogoutAPIView(APIView):
             'message': 'success',
         }
         return response
+
+
+class ForgotAPIView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        token = "".join(random.choice(string.ascii_lowercase +
+                        string.digits) for _ in range(10))
+        Reset.objects.create(email=request.data['email'], token=token)
+
+        url = 'http://localhost:3000/reset/'+token
+
+        send_mail(
+            subject="Reset Your Password",
+            message="Click <a href='{}'>Here</a> To reset Your Password".format(
+                url),
+            from_email="streamlining@info.com",
+            recipient_list=[email]
+        )
+
+        return Response({
+            'message': 'success',
+        })
