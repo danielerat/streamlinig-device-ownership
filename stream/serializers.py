@@ -1,8 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers, status
 from rest_framework.serializers import ModelSerializer
-from core.serializers import SimpleUserSerializer
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.utils import timezone
 from django.db import transaction
 import re

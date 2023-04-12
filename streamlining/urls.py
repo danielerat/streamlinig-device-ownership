@@ -7,6 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('streamlining/v1/', include('stream.urls')),
+    path('streamlining/v1/auth/', include('authentication.urls')),
 
     # Api Documentation Schema
     path("api/schema/", SpectacularAPIView.as_view(), name='schema'),

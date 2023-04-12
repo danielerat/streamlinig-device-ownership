@@ -3,8 +3,8 @@ import datetime
 from rest_framework import exceptions
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 
-from core.models import User
-from core.serializers import UserSerializer
+from authentication.models import User
+from authentication.serializers import UserSerializer
 
 
 class JWTAuthentication(BaseAuthentication):

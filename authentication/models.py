@@ -78,3 +78,15 @@ class BusinessInfo(models.Model):
 
     def __str__(self):
         return "Business {}".format(self.name)
+
+
+class UserToken(models.Model):
+    user_id = models.IntegerField()
+    token = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expired_at = models.DateTimeField()
+
+
+class Reset(models.Model):
+    email = models.CharField(max_length=255)
+    token = models.CharField(max_length=300, unique=True)

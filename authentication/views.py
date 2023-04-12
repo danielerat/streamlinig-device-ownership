@@ -9,8 +9,8 @@ from rest_framework import exceptions
 from rest_framework.authentication import get_authorization_header
 from authentication.authentication import JWTAuthentication, create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
-from core.serializers import UserSerializer
-from core.models import Reset, User, UserToken
+from authentication.serializers import UserSerializer
+from authentication.models import Reset, User, UserToken
 
 
 class RegisterAPIView(APIView):
@@ -18,7 +18,6 @@ class RegisterAPIView(APIView):
         data = request.data
         if data['password'] != data['password_confirm']:
             raise exceptions.APIException("Password Do Not Match")
-
         serializer = UserSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -27,10 +26,10 @@ class RegisterAPIView(APIView):
 
 class LoginAPIView(APIView):
     def post(self, request):
-        email = request.data['email']
+        phone_number = request.data['phone_number']
         password = request.data['password']
 
-        user = User.objects.filter(email=email).first()
+        user = User.objects.filter(phone_number=phone_number).first()
         if user is None:
             raise exceptions.AuthenticationFailed("Invalid Credentials")
 
