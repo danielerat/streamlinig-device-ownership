@@ -115,3 +115,21 @@ class ForgotAPIView(APIView):
         return Response({
             'message': 'success',
         })
+
+
+class ResetAPIView(APIView):
+    def post(self, request):
+        data = request.data
+        if data['password'] != data['password_confirm']:
+            raise exceptions.APIException("Passwords Do not match")
+        reset_password = Reset.objects.filter(token=data['token']).first()
+        if not reset_password:
+            raise exceptions.APIException("Invalid Link")
+        user = User.objects.filter(email=reset_password.email).first()
+        if not user:
+            raise exceptions.APIException("User not Found!")
+        user.set_password(data['password'])
+        user.save()
+        return Response({
+            'message': 'success',
+        })
