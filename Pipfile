@@ -9,6 +9,10 @@ pillow = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
 drf-spectacular = "*"
+pyjwt = "*"
+django-cors-headers = "*"
+mysqlclient = "*"
+python-dotenv = "*"
 
 [dev-packages]
 autopep8 = "*"
