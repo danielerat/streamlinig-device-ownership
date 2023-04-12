@@ -7,6 +7,17 @@ from core.models import User
 from core.serializers import UserSerializer
 
 
+class JWTAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        auth = get_authorization_header(request).split()
+        if auth and len(auth) == 2:
+            token = auth[1].decode('utf-8')  # Token in string
+            id = decode_access_token(token)
+            user = User.objects.get(pk=id)
+            return (user, None)
+        raise exceptions.AuthenticationFailed("Unauthenticated")
+
+
 def decode_access_token(token):
     try:
         payload = jwt.decode(token, 'access_secret', algorithms='HS256')
