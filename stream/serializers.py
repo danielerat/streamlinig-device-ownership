@@ -8,7 +8,7 @@ from django.db import transaction
 import re
 
 from stream.models import Device, DeviceFirstAssignment, DeviceImage, PendingTransfer, Transfer, Warranty
-from core.models import User
+from authentication.models import User
 
 from rest_framework.exceptions import APIException
 
