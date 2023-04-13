@@ -132,3 +132,15 @@ class ResetAPIView(APIView):
         return Response({
             'message': 'success',
         })
+
+
+class UserCheckAPIView(APIView):
+    def post(self, request):
+        phone_number = request.data['phone_number']
+        national_id = request.data['national_id']
+
+        user = User.objects.filter(
+            phone_number=phone_number, national_id=national_id).first()
+        if user is None:
+            raise exceptions.AuthenticationFailed("Unknown User")
+        return Response({"first_name": user.first_name, "last_name": user.last_name})
