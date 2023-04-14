@@ -53,7 +53,7 @@ class Device(models.Model):
     status = models.CharField(choices=DEVICE_AVAILABILITY_CHOICES,
                               null=False, blank=False, default="active", max_length=50)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
-                              on_delete=models.CASCADE, null=False, blank=False)
+                              on_delete=models.CASCADE, null=False, blank=False, related_name="devices")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
