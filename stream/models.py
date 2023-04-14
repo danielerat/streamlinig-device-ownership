@@ -59,6 +59,8 @@ class Device(models.Model):
     def __str__(self):
         return "Device " + self.model
 
+# Keeps track of the person who added the device at first in the system
+
 
 class DeviceFirstAssignment(models.Model):
     device = models.OneToOneField(Device, on_delete=models.CASCADE)
@@ -115,6 +117,8 @@ class Transfer(models.Model):
 
 
 # Devices that are published and can be seen by the public for purchase
+
+
 class Publish(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4)
     publisher = models.ForeignKey(
@@ -142,3 +146,14 @@ class PendingTransfer(models.Model):
 
     def __str__(self):
         return f"Transfer #%s" % self.id
+
+# Devices that were reported by users to be found
+
+
+class ReportedDevice(models.Model):
+    device = models.ForeignKey(
+        Device, on_delete=models.CASCADE, null=False, blank=False)
+    names = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    comment = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
