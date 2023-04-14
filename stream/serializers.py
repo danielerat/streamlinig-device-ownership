@@ -57,18 +57,20 @@ class DeviceSerializer(ModelSerializer):
 
     class Meta:
         model = Device
-        fields = ["id", "name", "model", "serial_number", "mac_address", "imei",
-                  "price", "category", "desc", "quality", "status", "owner", "images", "warranty", "transfers"]
+        fields = ["id", "name", "model", "serial_number", "mac_address", "imei", "price",
+                  "category", "desc", "quality", "status", "owner", "images", "warranty", "transfers"]
 
     def create(self, validated_data):
         request = self.context.get('request')
-        device, created = Device.objects.get_or_create(**validated_data)
-        # if device is not being saved for the first time, update the existing instance
-        if created:
-            device.save()
-            DeviceFirstAssignment.objects.create(
-                device_id=device.pk, holder=request.user, first_owner=device.owner)
-        return device
+        with transaction.atomic():
+            device, created = Device.objects.get_or_create(**validated_data)
+            # if device is not being saved for the first time, update the existing instance
+            if created:
+                device.save()
+                DeviceFirstAssignment.objects.create(
+                    device_id=device.pk, holder=request.user, first_owner=device.owner)
+            return device
+        return {"true": True}
 
 
 class DeviceTransferSerializer(serializers.Serializer):
