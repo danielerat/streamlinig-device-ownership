@@ -9,12 +9,13 @@ from rest_framework.generics import ListAPIView
 from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer
 from django.db.models import Q
 from rest_framework.decorators import action
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 # --- Ninja Views---
 
 
 class DeviceViewset(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
 
@@ -25,6 +26,9 @@ class DeviceViewset(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'message': 'Device Successfully Tranfered'})
+
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 
 class DeviceImageViewset(ModelViewSet):
