@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from stream.models import Device, DeviceImage
 from rest_framework.generics import ListAPIView
-from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer
+from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, ReportedDeviceSerializer
 from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -69,3 +69,14 @@ class DeviceSearchAPIView(APIView):
                 # Return binary response indicating device not found
                 return Response({'message': 'Device not registered in the system, thus not reported as stolen.'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'message': "Search for a device using its serial number, IMEI, or MAC address, and I will tell you whether it's safe to buy or not. (/search/?search='ime/mac/searial')"}, status=status.HTTP_200_OK)
+
+
+class ReportedDeviceAPIView(APIView):
+    authentication_classes = []
+
+    def post(self, request):
+        data = request.data
+        serializer = ReportedDeviceSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response("ok")
