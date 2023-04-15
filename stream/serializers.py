@@ -4,9 +4,10 @@ from rest_framework.serializers import ModelSerializer
 from datetime import timedelta
 from django.utils import timezone
 from django.db import transaction
+from django.db.models import Q
 import re
 
-from stream.models import Device, DeviceFirstAssignment, DeviceImage, PendingTransfer, Transfer, Warranty
+from stream.models import Device, DeviceFirstAssignment, DeviceImage, PendingTransfer, ReportedDevice, Transfer, Warranty
 from authentication.models import User
 
 from rest_framework.exceptions import APIException
@@ -70,7 +71,6 @@ class DeviceSerializer(ModelSerializer):
                 DeviceFirstAssignment.objects.create(
                     device_id=device.pk, holder=request.user, first_owner=device.owner)
             return device
-        return {"true": True}
 
 
 class DeviceTransferSerializer(serializers.Serializer):
@@ -119,3 +119,25 @@ class DeviceTransferSerializer(serializers.Serializer):
                 device=device, transferor=transferor, transferee=owner)
             self.instance = device
         return self.instance
+
+
+class ReportedDeviceSerializer(ModelSerializer):
+    device = serializers.CharField(max_length=64)
+
+    class Meta:
+        model = ReportedDevice
+        fields = ['device', 'names', 'phone_number', 'comment']
+
+    def create(self, validated_data):
+        reported = ReportedDevice.objects.create(**validated_data)
+        return True
+
+    def validate(self, data):
+        search_query = data['device']
+        device = Device.objects.filter(Q(imei=search_query) | Q(
+            serial_number=search_query) | Q(mac_address=search_query), Q(status='stolen') | Q(status='lost'))
+        if not device.exists():
+            raise serializers.ValidationError(
+                "This Device is not reported lost.")
+        data['device'] = device.first()
+        return data

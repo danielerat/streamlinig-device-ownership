@@ -15,5 +15,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('', include(devices_router.urls)),
     path('search/', views.DeviceSearchAPIView.as_view(), name='device-search'),
-
+    path('report-found/', views.ReportedDeviceAPIView.as_view(), name='found-devices'),
 ]
