@@ -126,6 +126,8 @@ class ForgotAPIView(APIView):
 
 
 class ResetAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         data = request.data
         if data['password'] != data['password_confirm']:
