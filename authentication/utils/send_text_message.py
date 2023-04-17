@@ -1,13 +1,16 @@
 import requests
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 
 def send_text_message_welcome(phone, names="Dear"):
     if phone != "":
-        url = "https://www.intouchsms.co.rw/api/sendsms/.json"
+        url = os.environ.get("INTOUCH_URL")
         data = {
-            "username": "danielerat",
-            "password": "GUcR@.xY59VypWh",
-            "senderid": "25228",
+            "username":  os.environ.get("INTOUCH_USERNAME"),
+            "password":  os.environ.get("INTOUCH_PASSWORD"),
+            "senderid": os.environ.get("INTOUCH_USERID"),
             "recipients": phone,
             "message": "Hi, {}. Welcome at Streamlining. let's Get Started Registering your Devices".format(names),
         }
