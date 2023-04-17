@@ -1,15 +1,8 @@
-from django.conf import settings
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from django.http import Http404
-from django.shortcuts import render
-
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework import status
 from stream.models import Device, DeviceImage
 
-from rest_framework.generics import ListAPIView
 from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, ReportedDeviceSerializer
 from django.db.models import Q
 from rest_framework.decorators import action
@@ -84,20 +77,3 @@ class ReportedDeviceAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response("ok")
-
-
-def send_email(request):
-    # Render the email template
-    email_template = render_to_string(
-        'emails/password_reset.html', {'name': 'John'})
-
-    # Create an EmailMessage object
-    email = EmailMessage(
-        'Subject of the Email',  # Subject of the email
-        email_template,  # Content of the email (the rendered template)
-        settings.DEFAULT_FROM_EMAIL,  # From email address
-        ['recipient@example.com'],  # List of recipient email addresses
-    )
-
-    # Send the email
-    email.send()
