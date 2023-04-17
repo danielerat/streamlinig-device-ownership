@@ -16,12 +16,18 @@ CHOICES_ACCOUNT_TYPE = (
 
 
 class User(AbstractUser):
+
     # remove the username field
     username = None
 
     # add the phone_number field as the new unique identifier
-    phone_number = models.CharField(max_length=10, unique=True)
-
+    phone_number = models.CharField(
+        validators=[RegexValidator(
+            r'^07\d{8}$', "Phone number must be exactly 10 digits and must be a rwandan Number.")],
+        max_length=10,
+        unique=True,
+        help_text="Phone number must be exactly 10 digits and start with '07'"
+    )
     # add the email and national_id fields
     email = models.EmailField(unique=True)
 
