@@ -9,7 +9,11 @@ from authentication.serializers import UserSerializer
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
+        if request.path.startswith('/api/schema/'):
+            return None
+
         auth = get_authorization_header(request).split()
+
         if auth and len(auth) == 2:
             token = auth[1].decode('utf-8')  # Token in string
             id = decode_access_token(token)

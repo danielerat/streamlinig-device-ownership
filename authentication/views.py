@@ -14,6 +14,8 @@ from authentication.models import Reset, User, UserToken
 
 
 class RegisterAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         data = request.data
         if data['password'] != data['password_confirm']:
@@ -25,6 +27,8 @@ class RegisterAPIView(APIView):
 
 
 class LoginAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         phone_number = request.data['phone_number']
         password = request.data['password']
@@ -65,6 +69,8 @@ class UserAPIView(APIView):
 
 
 class RefreshAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         # Get the token from the cookie
         refresh_token = request.COOKIES.get('refresh_token')
@@ -83,6 +89,7 @@ class RefreshAPIView(APIView):
 
 
 class LogoutAPIView(APIView):
+
     def post(self, request):
         refresh_token = request.COOKIES.get('refresh_token')
         UserToken.objects.filter(token=refresh_token).delete()
@@ -95,6 +102,8 @@ class LogoutAPIView(APIView):
 
 
 class ForgotAPIView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         email = request.data['email']
         token = "".join(random.choice(string.ascii_lowercase +
