@@ -16,4 +16,5 @@ urlpatterns = [
     path('', include(devices_router.urls)),
     path('search/', views.DeviceSearchAPIView.as_view(), name='device-search'),
     path('report-found/', views.ReportedDeviceAPIView.as_view(), name='found-devices'),
+    path('send_email/', views.send_email, name='send_email'),
 ]
