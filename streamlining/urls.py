@@ -3,8 +3,10 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.views.generic import TemplateView
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="stream/index.html")),
     path('admin/', admin.site.urls),
     path('streamlining/v1/', include('stream.urls')),
     path('streamlining/v1/auth/', include('authentication.urls')),
