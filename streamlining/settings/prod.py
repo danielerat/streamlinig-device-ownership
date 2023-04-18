@@ -16,6 +16,16 @@ JaPwrd = database_attr[2].split('@')[0]
 JaHost = database_attr[2].split('@')[1]
 JaPort = int(database_attr[3].split('/')[0])
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': JaName,
+        'USER': JaUser,
+        'PASSWORD': JaPwrd,
+        'HOST': JaHost,
+    }
+}
+
 # Email Configurations
 EMAIL_HOST = os.environ['MAILGUN_SMTP_SERVER']
 EMAIL_HOST_USER = EMAIL_HOST = os.environ['MAILGUN_SMTP_LOGIN']
