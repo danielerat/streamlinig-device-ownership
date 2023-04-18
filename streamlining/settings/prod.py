@@ -3,6 +3,6 @@ import os
 
 
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['streamlining.herokuapp.com']
 
 SECRET_KEY = os.environ['SECRET_KEY']
