@@ -11,13 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e^0-fym%v-z%*s0f6w=ft3^j-pocn#x)ww2^7@d2!4iwmv=(-$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 CORS_ORIGIN_WHITELIST = ['http://localhost:8080']
 # Application definition
@@ -35,7 +28,6 @@ PROJECT_APPS = [
     'authentication',
     'stream',
     'core',
-
 ]
 
 THIRD_PARTY_APPS = [
@@ -78,20 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'streamlining.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("DB_ENGINE"),
-        "NAME": os.environ.get("DB_NAME"),
-        "HOST": os.environ.get("DB_HOST"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-    }
-}
 
 
 # Password validation
