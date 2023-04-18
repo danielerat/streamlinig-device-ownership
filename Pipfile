@@ -13,6 +13,7 @@ pyjwt = "*"
 django-cors-headers = "*"
 mysqlclient = "*"
 python-dotenv = "*"
+whitenoise = "*"
 
 [dev-packages]
 autopep8 = "*"
