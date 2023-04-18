@@ -15,6 +15,7 @@ mysqlclient = "*"
 python-dotenv = "*"
 whitenoise = "*"
 gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 autopep8 = "*"
