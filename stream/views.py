@@ -77,3 +77,8 @@ class ReportedDeviceAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response("ok")
+
+
+class StatView(APIView):
+    # return statistical data here
+    pass

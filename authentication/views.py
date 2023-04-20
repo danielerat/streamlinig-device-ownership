@@ -1,12 +1,10 @@
 import datetime
 import random
 import string
-from django.shortcuts import render
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import exceptions
-from rest_framework.authentication import get_authorization_header
 from authentication.authentication import JWTAuthentication, create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
 from authentication.serializers import UserSerializer
