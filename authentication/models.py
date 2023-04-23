@@ -26,10 +26,13 @@ class User(AbstractUser):
             r'^07\d{8}$', "Phone number must be exactly 10 digits and must be a rwandan Number.")],
         max_length=10,
         unique=True,
+        null=False,
+        blank=False,
         help_text="Phone number must be exactly 10 digits and start with '07'"
     )
     # add the email and national_id fields
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=False,
+                              blank=False)
 
     # Accound type for users
     account_type = models.CharField(
@@ -39,7 +42,8 @@ class User(AbstractUser):
     national_id = models.CharField(max_length=16, validators=[
         RegexValidator(
             r'^[0-9]{16}$', 'Only 16-digit numeric values are allowed.')
-    ])
+    ], null=False,
+        blank=False,)
 
     # set the phone_number field as the USERNAME_FIELD
     USERNAME_FIELD = 'phone_number'
