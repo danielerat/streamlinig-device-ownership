@@ -1,9 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework import status
-from stream.models import Device, DeviceImage
+from stream.models import Device, DeviceImage, PendingTransfer
 
-from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, ReportedDeviceSerializer
+from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, PendingDeviceSerializer, ReportedDeviceSerializer
 from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -82,3 +82,14 @@ class ReportedDeviceAPIView(APIView):
 class StatView(APIView):
     # return statistical data here
     pass
+
+
+class PendingDevicesViewset(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PendingDeviceSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        queryset = PendingTransfer.objects.filter(transferee=user)
+        return queryset

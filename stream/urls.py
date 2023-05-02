@@ -4,6 +4,8 @@ from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
 router.register('devices', views.DeviceViewset, basename='devices')
+router.register('pending-devices', views.PendingDevicesViewset,
+                basename='pending-devices')
 
 devices_router = routers.NestedSimpleRouter(
     router, 'devices', lookup='device')
