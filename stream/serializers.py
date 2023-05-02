@@ -150,14 +150,33 @@ class ReportedDeviceSerializer(ModelSerializer):
         return data
 
 
-class PendingDeviceSerializer(ModelSerializer):
-    transferor = SimpleUserSerializer(read_only=True)
+class SimpleDeviceSerializer(ModelSerializer):
+    images = DeviceImageSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Transfer
-        fields = ["id", "transferor", "transfer_status", "created"]
+        model = Device
+        fields = ["id", "name", "model", "serial_number", "price",
+                  "category", "quality",  "owner", "images", ]
+
+
+class PendingDeviceSerializer(ModelSerializer):
+    transferor = SimpleUserSerializer(read_only=True)
+    device = SimpleDeviceSerializer(read_only=True)
+
+    class Meta:
+        model = PendingTransfer
+        fields = ["id", "device", "transferor", "transfer_status", "created"]
         extra_kwargs = {
             'id': {'read_only': True},
             "transferor": {'read_only': True},
             "created": {'read_only': True}
         }
+
+
+class TransfersSerializer(ModelSerializer):
+    device = SimpleDeviceSerializer(read_only=True)
+
+    class Meta:
+        model = Transfer
+        fields = ["id", "device", "transferor", "transfer_status",
+                  "last_confirm", "created"]
