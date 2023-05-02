@@ -1,9 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework import status
-from stream.models import Device, DeviceImage, PendingTransfer
+from stream.models import Device, DeviceImage, PendingTransfer, Transfer
 
-from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, PendingDeviceSerializer, ReportedDeviceSerializer
+from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, PendingDeviceSerializer, ReportedDeviceSerializer, TransfersSerializer
 from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -13,8 +13,14 @@ from rest_framework.response import Response
 
 class DeviceViewset(ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Device.objects.all()
+
     serializer_class = DeviceSerializer
+
+    def get_queryset(self):
+        queryset = Device.objects.filter(owner=self.request.user)
+        return queryset
+    # An action responsible of transferring a given device to a given user.
+        # devices/transfer
 
     @action(detail=True, methods=['post'])
     def transfer(self, request, pk=None):
@@ -23,9 +29,17 @@ class DeviceViewset(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'message': 'Device Successfully Tranfered'})
+    # Action to get all the devices I ever transferred.
+        # devices/my_transfers
 
-    def get_serializer_context(self):
-        return {"request": self.request}
+    @action(detail=False, methods=['get'])
+    def my_transfers(self, request):
+        devices = Transfer.objects.filter(
+            Q(transferor=request.user) |
+            Q(transferee=request.user)
+        )
+        serializer = TransfersSerializer(devices, many=True)
+        return Response(serializer.data)
 
 
 class DeviceImageViewset(ModelViewSet):
@@ -90,6 +104,5 @@ class PendingDevicesViewset(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
         queryset = PendingTransfer.objects.filter(transferee=user)
         return queryset
