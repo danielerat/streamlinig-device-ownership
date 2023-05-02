@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework import status
 from stream.models import Device, DeviceImage, PendingTransfer, Transfer
+from stream.permissions import IsBusinessOwnerOrReadOnly
 
 from stream.serializers import DeviceImageSerializer, DeviceSerializer, DeviceTransferSerializer, PendingDeviceSerializer, ReportedDeviceSerializer, TransfersSerializer
 from django.db.models import Q
@@ -12,8 +13,7 @@ from rest_framework.response import Response
 
 
 class DeviceViewset(ModelViewSet):
-    permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsAuthenticated, IsBusinessOwnerOrReadOnly]
     serializer_class = DeviceSerializer
 
     def get_queryset(self):
