@@ -52,8 +52,14 @@ class DeviceAdmin(admin.ModelAdmin):
     inlines = [DeviceImageInline]
 
 
+@admin.register(Transfer)
+class TransferAdmin(admin.ModelAdmin):
+    list_display = ["device", "transferor",
+                    "transferee", "transfer_status", "last_confirm"]
+
+
 admin.site.register(Warranty)
 admin.site.register(DeviceFirstAssignment)
-admin.site.register(Transfer)
+
 admin.site.register(PendingTransfer)
 admin.site.register(ReportedDevice)
