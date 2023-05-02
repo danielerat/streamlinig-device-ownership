@@ -13,7 +13,14 @@ from authentication.models import User
 from rest_framework.exceptions import APIException
 
 
-class TransferSerializer(serializers.ModelSerializer):
+class SimpleUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name',
+                  'email', 'phone_number']
+
+
+class TransferSerializer(ModelSerializer):
     class Meta:
         model = Transfer
         fields = ["id", "transferor", "transferee", "last_confirm", "created"]
@@ -141,3 +148,16 @@ class ReportedDeviceSerializer(ModelSerializer):
                 "This Device is not reported lost.")
         data['device'] = device.first()
         return data
+
+
+class PendingDeviceSerializer(ModelSerializer):
+    transferor = SimpleUserSerializer(read_only=True)
+
+    class Meta:
+        model = Transfer
+        fields = ["id", "transferor", "transfer_status", "created"]
+        extra_kwargs = {
+            'id': {'read_only': True},
+            "transferor": {'read_only': True},
+            "created": {'read_only': True}
+        }
