@@ -15,6 +15,7 @@ def send_welcome_email(to, names):
         settings.DEFAULT_FROM_EMAIL,  # From email address
         [to],  # List of recipient email addresses
     )
+    email.content_subtype = 'html'
 
     # Send the email
     email.send()
