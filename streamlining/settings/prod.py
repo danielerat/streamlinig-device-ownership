@@ -28,7 +28,9 @@ DATABASES = {
 
 # Email Configurations
 
-EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
-EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
-EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
-EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
+
+EMAIL_HOST = os.environ.get('GMAIL_EMAIL_HOST', '')
+EMAIL_PORT = os.environ.get('GMAIL_EMAIL_PORT', '')
+EMAIL_USE_TLS = os.environ.get('GMAIL_EMAIL_USE_TLS', '')
+EMAIL_HOST_USER = os.environ.get('GMAIL_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_EMAIL_HOST_PASSWORD', '')
