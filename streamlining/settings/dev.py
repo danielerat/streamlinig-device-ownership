@@ -15,9 +15,19 @@ DATABASES = {
 }
 
 # Email Configurations
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 2525
-DEFAULT_FROM_EMAIL = "info@streamlining.com"
+EMAIL_HOST = os.environ.get('GMAIL_EMAIL_HOST', '')
+EMAIL_PORT = os.environ.get('GMAIL_EMAIL_PORT', '')
+EMAIL_USE_TLS = os.environ.get('GMAIL_EMAIL_USE_TLS', '')
+EMAIL_HOST_USER = os.environ.get('GMAIL_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_EMAIL_HOST_PASSWORD', '')
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+
+CELERY_BEAT_SCHEDULE = {
+    'notify_customers': {
+        'task': 'playground.tasks.notify_customers',
+        # 'schedule':contab(day_of_week=1,hours=7)
+        'schedule': 5,
+        'args': ['Periodic Sending of notifications']
+    }
+}
