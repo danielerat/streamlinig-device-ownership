@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 from authentication.utils.send_email_templates import send_welcome_email
 from authentication.utils.send_text_message import send_text_message_welcome
+from authentication.tasks import send_welcome_email_to_new_user, send_welcome_text_to_new_user
 
 
 @receiver(post_save, sender=User)
@@ -16,12 +17,13 @@ def create_profile_for_new_account(sender, **kwargs):
 
         if user.email != "":
             try:
-                send_welcome_email(user.email, user.get_full_name())
+                send_welcome_email_to_new_user.delay(
+                    user.email, user.get_full_name())
             except:
                 print("Error Sending the emial")
         if user.phone_number != "":
             try:
-                send_text_message_welcome(
+                send_welcome_text_to_new_user.delay(
                     user.phone_number, user.get_full_name())
             except:
                 print("Error Sending the Text Message")
