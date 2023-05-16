@@ -13,7 +13,7 @@ from rest_framework.response import Response
 
 
 class DeviceViewset(ModelViewSet):
-    permission_classes = [IsAuthenticated, IsBusinessOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = DeviceSerializer
 
     def get_queryset(self):
