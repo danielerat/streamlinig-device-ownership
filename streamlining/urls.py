@@ -13,7 +13,8 @@ urlpatterns = [
 
     # Api Documentation Schema
     path("api/schema/", SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/docs/', SpectacularSwaggerView.as_view(url_name="schema"))
+    path('api/schema/docs/', SpectacularSwaggerView.as_view(url_name="schema")),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'), #new
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
