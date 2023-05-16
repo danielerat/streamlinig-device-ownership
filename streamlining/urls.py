@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView  #new
 from django.views.generic import TemplateView
 
 urlpatterns = [
