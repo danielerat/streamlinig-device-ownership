@@ -7,13 +7,16 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from authentication.authentication import JWTAuthentication, create_access_token, create_refresh_token, decode_access_token, decode_refresh_token
 
-from authentication.serializers import UserSerializer
+from authentication.serializers import LoginSerializer, UserSerializer
 from authentication.models import Reset, User, UserToken
+
+from drf_spectacular.utils import extend_schema,OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 
 
 class RegisterAPIView(APIView):
     authentication_classes = []
-
+    serializer_class=UserSerializer
     def post(self, request):
         data = request.data
         if data['password'] != data['password_confirm']:
@@ -26,7 +29,7 @@ class RegisterAPIView(APIView):
 
 class LoginAPIView(APIView):
     authentication_classes = []
-
+    serializer_class=LoginSerializer
     def post(self, request):
         phone_number = request.data['phone_number']
         password = request.data['password']
