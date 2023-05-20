@@ -123,7 +123,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'A solution of An Electronic Device Ownership Tracking Web Application',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-
+    'REDOC_DIST': 'SIDECAR',
 }
 
 
